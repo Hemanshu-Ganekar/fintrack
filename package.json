@@ -12,6 +12,7 @@
     "dev:all": "concurrently \"npm run dev\" \"npm run server\""
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.3",
     "concurrently": "^10.0.3",
     "cors": "^2.8.6",
@@ -21,9 +22,11 @@
     "lucide-react": "^1.23.0",
     "mongodb": "^7.5.0",
     "mongoose": "^9.7.4",
+    "multer": "^2.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "recharts": "^3.9.2"
+    "recharts": "^3.9.2",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.2",

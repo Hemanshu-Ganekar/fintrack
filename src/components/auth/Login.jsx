@@ -13,13 +13,13 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_URL = '/api';
+  const API_URL = 'http://localhost:5001/api';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
+ 
     if (view === 'forgot') {
       if (newPassword.length < 6) {
         setError('Password must be at least 6 characters long.');

@@ -8,6 +8,10 @@ import AnalyticsView from './components/dashboard/AnalyticsView';
 import SettingsView from './components/dashboard/SettingsView';
 import AIAssistantView from './components/dashboard/AIAssistantView';
 import Login from './components/auth/Login';
+import OCRView from './components/dashboard/AutoTransaction';
+import AutoTransaction from './components/dashboard/AutoTransaction';
+import InvestmentPlanner from './components/dashboard/InvestmentPlanner';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!sessionStorage.getItem('fintrack_token'));
@@ -39,7 +43,7 @@ function App() {
   // Fetch DB Connection Status
   const checkDbStatus = async () => {
     try {
-      const res = await fetch('/api/db-status');
+      const res = await fetch('http://localhost:5001/api/db-status');
       if (res.ok) {
         const data = await res.json();
         setDbConnected(data.connected);
@@ -67,8 +71,8 @@ function App() {
 
       // Parallel fetch settings and transactions
       const [txRes, settingsRes] = await Promise.all([
-        fetchWithAuth('/api/transactions'),
-        fetchWithAuth('/api/settings')
+        fetchWithAuth('http://localhost:5001/api/transactions'),
+        fetchWithAuth('http://localhost:5001/api/settings')
       ]);
 
       if (txRes.status === 401 || settingsRes.status === 401) {
@@ -202,11 +206,11 @@ function App() {
   // Handlers
   const handleSaveTransaction = async (tx) => {
     try {
-      let url = '/api/transactions';
+      let url = 'http://localhost:5001/api/transactions';
       let method = 'POST';
 
       if (editingTransaction) {
-        url = `/api/transactions/${editingTransaction.id}`;
+        url = `http://localhost:5001/api/transactions/${editingTransaction.id}`;
         method = 'PUT';
       }
 
@@ -237,7 +241,7 @@ function App() {
   const handleDeleteTransaction = async (id) => {
     if (!window.confirm('Are you sure you want to delete this transaction?')) return;
     try {
-      const res = await fetchWithAuth(`/api/transactions/${id}`, {
+      const res = await fetchWithAuth(`http://localhost:5001/api/transactions/${id}`, {
         method: 'DELETE'
       });
       if (!res.ok) {
@@ -262,7 +266,7 @@ function App() {
   const handleClearData = async () => {
     if (!window.confirm('CRITICAL WARNING: This will permanently delete all your transaction history. Proceed?')) return;
     try {
-      const res = await fetchWithAuth('/api/transactions/clear', { method: 'POST' });
+      const res = await fetchWithAuth('http://localhost:5001/api/transactions/clear', { method: 'POST' });
       if (!res.ok) throw new Error('Failed to clear data');
       setTransactions([]);
     } catch (err) {
@@ -274,7 +278,7 @@ function App() {
   const handleUpdateUserName = async (name) => {
     try {
       setUserName(name);
-      await fetchWithAuth('/api/settings', {
+      await fetchWithAuth('http://localhost:5001/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: name })
@@ -287,7 +291,7 @@ function App() {
   const handleUpdateCurrency = async (curr) => {
     try {
       setCurrency(curr);
-      await fetchWithAuth('/api/settings', {
+      await fetchWithAuth('http://localhost:5001/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ currency: curr })
@@ -302,7 +306,7 @@ function App() {
     try {
       setUserName('User');
       setCurrency('Rs.');
-      await fetchWithAuth('/api/settings', {
+      await fetchWithAuth('http://localhost:5001/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: 'User', currency: 'Rs.' })
@@ -434,6 +438,14 @@ function App() {
         return (
           <AnalyticsView transactions={transactions} currency={currency} />
         );
+      case 'ocr':
+        return (
+          <AutoTransaction/>
+        )
+      case 'investment':
+        return(
+        <InvestmentPlanner/>
+    )
       case 'settings':
         return (
           <SettingsView 

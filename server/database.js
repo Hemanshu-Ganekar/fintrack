@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
 const TransactionSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
+  type: { type: String, enum: ['Expense', 'Income'], default: 'Expense' }, // ← added
   category: { type: String, required: true },
   date: { type: String, required: true },
   rawDate: { type: String, required: true },

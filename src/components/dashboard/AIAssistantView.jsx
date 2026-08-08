@@ -30,7 +30,7 @@ const AIAssistantView = ({ transactions = [], currency = 'Rs.' }) => {
       if (!token) return;
 
       try {
-        const res = await fetch('/api/transactions', {
+        const res = await fetch('http://localhost:5001/api/transactions', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
