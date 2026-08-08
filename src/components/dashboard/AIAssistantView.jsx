@@ -7,7 +7,7 @@ const GEMINI_MODEL = 'gemma-4-26b-a4b-it';
 // If you're on Create React App instead, use process.env.REACT_APP_GEMINI_API_KEY
 // and add a `declare const process: any;` if TypeScript complains.
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
+const base_url = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
 const AIAssistantView = ({ transactions = [], currency = 'Rs.' }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -30,7 +30,7 @@ const AIAssistantView = ({ transactions = [], currency = 'Rs.' }) => {
       if (!token) return;
 
       try {
-        const res = await fetch('http://localhost:5001/api/transactions', {
+        const res = await fetch(`${base_url}/api/transactions`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

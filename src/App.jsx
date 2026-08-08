@@ -29,7 +29,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dbConnected, setDbConnected] = useState(true);
-
+  const base_url = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'; // Fallback to localhost if not set
   // Helper to attach JWT token
   const fetchWithAuth = async (url, options = {}) => {
     const token = sessionStorage.getItem('fintrack_token');
@@ -43,7 +43,7 @@ function App() {
   // Fetch DB Connection Status
   const checkDbStatus = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/db-status');
+      const res = await fetch(`${base_url}/api/db-status`);
       if (res.ok) {
         const data = await res.json();
         setDbConnected(data.connected);
@@ -71,8 +71,8 @@ function App() {
 
       // Parallel fetch settings and transactions
       const [txRes, settingsRes] = await Promise.all([
-        fetchWithAuth('http://localhost:5001/api/transactions'),
-        fetchWithAuth('http://localhost:5001/api/settings')
+        fetchWithAuth(`${base_url}/api/transactions`),
+        fetchWithAuth(`${base_url}/api/settings`)
       ]);
 
       if (txRes.status === 401 || settingsRes.status === 401) {
@@ -206,11 +206,11 @@ function App() {
   // Handlers
   const handleSaveTransaction = async (tx) => {
     try {
-      let url = 'http://localhost:5001/api/transactions';
+      let url = `${base_url}/api/transactions`;
       let method = 'POST';
 
       if (editingTransaction) {
-        url = `http://localhost:5001/api/transactions/${editingTransaction.id}`;
+        url = `${base_url}/api/transactions/${editingTransaction.id}`;
         method = 'PUT';
       }
 
@@ -241,7 +241,7 @@ function App() {
   const handleDeleteTransaction = async (id) => {
     if (!window.confirm('Are you sure you want to delete this transaction?')) return;
     try {
-      const res = await fetchWithAuth(`http://localhost:5001/api/transactions/${id}`, {
+      const res = await fetchWithAuth(`${base_url}/api/transactions/${id}`, {
         method: 'DELETE'
       });
       if (!res.ok) {
@@ -266,7 +266,7 @@ function App() {
   const handleClearData = async () => {
     if (!window.confirm('CRITICAL WARNING: This will permanently delete all your transaction history. Proceed?')) return;
     try {
-      const res = await fetchWithAuth('http://localhost:5001/api/transactions/clear', { method: 'POST' });
+      const res = await fetchWithAuth(`${base_url}/api/transactions/clear`, { method: 'POST' });
       if (!res.ok) throw new Error('Failed to clear data');
       setTransactions([]);
     } catch (err) {
@@ -278,7 +278,7 @@ function App() {
   const handleUpdateUserName = async (name) => {
     try {
       setUserName(name);
-      await fetchWithAuth('http://localhost:5001/api/settings', {
+      await fetchWithAuth(`${base_url}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: name })
@@ -291,7 +291,7 @@ function App() {
   const handleUpdateCurrency = async (curr) => {
     try {
       setCurrency(curr);
-      await fetchWithAuth('http://localhost:5001/api/settings', {
+      await fetchWithAuth(`${base_url}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ currency: curr })
@@ -306,7 +306,7 @@ function App() {
     try {
       setUserName('User');
       setCurrency('Rs.');
-      await fetchWithAuth('http://localhost:5001/api/settings', {
+      await fetchWithAuth(`${base_url}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: 'User', currency: 'Rs.' })
