@@ -29,7 +29,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dbConnected, setDbConnected] = useState(true);
-  const base_url = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'; // Fallback to localhost if not set
+  const base_url = import.meta.env.VITE_API_BASE_URL || 'http://fintrack-seven-rho.vercel.app/'; // Fallback to localhost if not set
   // Helper to attach JWT token
   const fetchWithAuth = async (url, options = {}) => {
     const token = sessionStorage.getItem('fintrack_token');

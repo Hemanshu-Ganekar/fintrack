@@ -9,7 +9,7 @@ const AutoTransaction = ({ onSaved }) => {
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
 
-  const API_BASE = 'http://localhost:5001'; // matches your PORT fallback
+  const API_BASE = 'http://fintrack-seven-rho.vercel.app/'; // matches your PORT fallback
 
   // adjust this if you store the JWT somewhere other than localStorage
   const getToken = () => sessionStorage.getItem('fintrack_token');
