@@ -60,6 +60,6 @@ You can run both the frontend development server and the backend server concurre
 ```bash
 npm run dev:all
 ```
-- **Frontend App**: Available at `http://localhost:5173`
-- **Backend API**: Available at `http://localhost:5000`
+- **Frontend App**: Available at `https://fintrack-seven-rho.vercel.app:5173`
+- **Backend API**: Available at `https://fintrack-seven-rho.vercel.app:5000`
 

@@ -13,7 +13,7 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_URL = 'http://fintrack-seven-rho.vercel.app//api';
+  const API_URL = 'https://fintrack-seven-rho.vercel.app/api';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
